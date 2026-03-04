@@ -90,6 +90,16 @@
       gap: 12px;
     }
 
+    .btn-expert-header {
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .btn-expert-header {
+        display: inline-flex;
+      }
+    }
+
     .btn-expert {
       background: var(--papaya);
       color: var(--light-200);
@@ -282,7 +292,161 @@
       flex-shrink: 0;
     }
 
-    @media (max-width: 900px) {
+    /* Mobile bottom CTA - hidden on desktop */
+    .cta-bottom {
+      display: none;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+      .page {
+        padding-bottom: 88px;
+      }
+
+      .cta-bottom {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        z-index: 50;
+      }
+
+      .cta-bottom .btn-expert {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-text {
+        padding: 82px 16px 0;
+        text-align: left;
+        max-width: 343px;
+      }
+
+      .hero-label {
+        font-size: 10px;
+      }
+
+      .hero-title {
+        font-size: 24px;
+        letter-spacing: 0.24px;
+        text-align: left;
+      }
+
+      .hero-desc {
+        font-size: 13px;
+        letter-spacing: 0.13px;
+        text-align: left;
+      }
+
+      .tabs-wrap {
+        margin-top: 24px;
+        padding: 0 20px;
+        justify-content: flex-start;
+      }
+
+      .content-section {
+        flex-direction: column;
+        min-height: auto;
+        padding: 0 20px;
+        margin-top: 24px;
+      }
+
+      .content-image {
+        min-height: 318px;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .content-image img {
+        min-height: 318px;
+      }
+
+      .content-panel {
+        display: none;
+      }
+
+      .content-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 16px;
+        text-align: center;
+      }
+
+      .play-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(20, 20, 20, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .play-btn svg {
+        width: 24px;
+        height: 24px;
+        margin-left: 4px;
+        fill: white;
+      }
+
+      .feature-mobile-title {
+        font-size: 18px;
+        line-height: 1.2;
+        letter-spacing: 0.18px;
+        color: var(--dark-50);
+      }
+
+      .feature-mobile-desc {
+        font-size: 13px;
+        line-height: 1.2;
+        letter-spacing: 0.13px;
+        color: var(--dark-200);
+        max-width: 302px;
+        margin: 0 auto;
+      }
+
+      .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        padding-top: 12px;
+      }
+
+      .carousel-dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--dark-200);
+        opacity: 0.4;
+        cursor: pointer;
+      }
+
+      .carousel-dots span.active {
+        background: var(--dark-200);
+        opacity: 1;
+      }
+    }
+
+    .content-mobile {
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .play-btn {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 900px) and (min-width: 769px) {
       .content-panel {
         width: 100%;
         position: relative;
@@ -314,7 +478,7 @@
         </div>
       </div>
       <div class="top-bar-right">
-        <button class="btn-expert">Talk to an Expert</button>
+        <button class="btn-expert btn-expert-header">Talk to an Expert</button>
         <button class="hamburger" aria-label="Menu">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 6h18M3 12h18M3 18h18"/>
@@ -340,6 +504,19 @@
     <section class="content-section">
       <div class="content-image">
         <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80" alt="3D mattress visualization">
+        <button class="play-btn" aria-label="Play video">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+      <div class="content-mobile">
+        <p class="feature-mobile-title">Stunning 3D Bed<br>Models in Any Space</p>
+        <p class="feature-mobile-desc">Create high-quality product imagery & showcase your mattress in styled settings, creating an emotional connection and helping customers imagine your mattress in their space</p>
+        <div class="carousel-dots">
+          <span class="active"></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
       <div class="content-panel">
         <div class="feature-item full">
@@ -363,6 +540,10 @@
         </div>
       </div>
     </section>
+
+    <div class="cta-bottom">
+      <button class="btn-expert">Talk to an Expert</button>
+    </div>
   </div>
 </body>
 </html>
