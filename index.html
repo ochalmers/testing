@@ -887,9 +887,84 @@
       color: var(--dark-200);
       margin: 0;
     }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgb(30, 30, 30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loading-overlay.loaded {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(236, 78, 11, 0.2);
+      border-top-color: var(--papaya);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Page load animations */
+    .animate-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeSlideIn 0.6s ease forwards;
+    }
+
+    .animate-in.delay-1 { animation-delay: 0.1s; }
+    .animate-in.delay-2 { animation-delay: 0.2s; }
+    .animate-in.delay-3 { animation-delay: 0.3s; }
+    .animate-in.delay-4 { animation-delay: 0.4s; }
+    .animate-in.delay-5 { animation-delay: 0.5s; }
+    .animate-in.delay-6 { animation-delay: 0.6s; }
+
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Image loading skeleton */
+    .content-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(60,60,60,0.4) 25%, rgba(80,80,80,0.5) 50%, rgba(60,60,60,0.4) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .content-image.loaded::before {
+      display: none;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
   </style>
 </head>
 <body>
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+  </div>
   <div class="page">
     <header class="top-bar">
       <div class="logo">
@@ -917,13 +992,13 @@
       </div>
     </header>
 
-    <section class="hero-text" id="features">
+    <section class="hero-text animate-in" id="features">
       <p class="hero-label">Features</p>
       <h1 class="hero-title">Turn Mattress Products into Interactive, Shoppable Experiences</h1>
       <p class="hero-desc">Imagine.io lets mattress brands replace static listings with interactive 3D. Customers configure size, materials, and comfort in real time, directly on your ecommerce site. From coil to foam, fabric, and stitching—create, manage, and share every variant instantly.</p>
     </section>
 
-    <div class="tabs-wrap">
+    <div class="tabs-wrap animate-in delay-1">
       <div class="tabs">
         <button class="tab">Designers</button>
         <button class="tab active">Sales</button>
@@ -931,9 +1006,9 @@
       </div>
     </div>
 
-    <section class="content-section">
-      <div class="content-image">
-        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80" alt="3D mattress visualization">
+    <section class="content-section animate-in delay-2">
+      <div class="content-image" id="contentImage">
+        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80" alt="3D mattress visualization" id="heroImg">
         <button class="play-btn" aria-label="Play video">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </button>
@@ -973,7 +1048,7 @@
       </div>
     </section>
 
-    <section class="trusted">
+    <section class="trusted animate-in delay-3">
       <p class="trusted-label">Trusted by leading mattress brands</p>
       <div class="trusted-logos">
         <span>Sleep Number</span>
@@ -985,7 +1060,7 @@
       </div>
     </section>
 
-    <div class="stats">
+    <div class="stats animate-in delay-4">
       <div class="stat-item">
         <div class="stat-value">50%</div>
         <div class="stat-label">Faster design cycles</div>
@@ -1000,7 +1075,7 @@
       </div>
     </div>
 
-    <section class="section" id="benefits">
+    <section class="section animate-in delay-5" id="benefits">
       <p class="section-label">Why Imagine.io</p>
       <h2 class="section-title">Built for the way mattress brands work</h2>
       <p class="section-desc">A single platform that connects design, sales, and marketing—so every team works from the same source of truth.</p>
@@ -1159,5 +1234,32 @@
       <button class="btn-expert">Talk to an Expert</button>
     </div>
   </div>
+  <script>
+    (function() {
+      const overlay = document.getElementById('loadingOverlay');
+      const heroImg = document.getElementById('heroImg');
+      const contentImage = document.getElementById('contentImage');
+
+      function hideOverlay() {
+        overlay.classList.add('loaded');
+      }
+
+      if (heroImg && heroImg.complete) {
+        if (contentImage) contentImage.classList.add('loaded');
+        hideOverlay();
+      } else {
+        if (heroImg) {
+          heroImg.addEventListener('load', function() {
+            if (contentImage) contentImage.classList.add('loaded');
+            hideOverlay();
+          });
+        }
+        window.addEventListener('load', function() {
+          if (contentImage && !contentImage.classList.contains('loaded')) contentImage.classList.add('loaded');
+          hideOverlay();
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
